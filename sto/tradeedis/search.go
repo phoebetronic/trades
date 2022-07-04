@@ -30,19 +30,19 @@ func (r *Redis) Search(day time.Time) ([]trade.Trade, error) {
 		}
 
 		if len(res) == 0 {
-			return nil, tracer.Maskf(notFoundError, "candles for %s do not exist", day.String())
+			return nil, tracer.Maskf(notFoundError, "trades for %s do not exist", day.String())
 		}
 
 		val = res[0]
 	}
 
-	var can []trade.Trade
+	var tra []trade.Trade
 	{
-		err = json.Unmarshal([]byte(val), &can)
+		err = json.Unmarshal([]byte(val), &tra)
 		if err != nil {
 			return nil, tracer.Mask(err)
 		}
 	}
 
-	return can, nil
+	return tra, nil
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/phoebetron/trades/typ/trade"
 )
 
-func (r *Redis) Create(day time.Time, can []trade.Trade) error {
+func (r *Redis) Create(day time.Time, tra []trade.Trade) error {
 	var key string
 	{
 		key = r.Key()
@@ -18,7 +18,7 @@ func (r *Redis) Create(day time.Time, can []trade.Trade) error {
 
 	var val string
 	{
-		byt, err := json.Marshal(can)
+		byt, err := json.Marshal(tra)
 		if err != nil {
 			return tracer.Mask(err)
 		}

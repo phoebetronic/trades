@@ -3,7 +3,7 @@ package traderedis
 import "time"
 
 const (
-	canfmt = "06-01-02"
+	trafmt = "06-01-02"
 )
 
 func timday(tim time.Time) time.Time {
@@ -11,5 +11,5 @@ func timday(tim time.Time) time.Time {
 }
 
 func timfmt(tim time.Time) string {
-	return tim.UTC().Format(canfmt)
+	return tim.UTC().Format(trafmt)
 }

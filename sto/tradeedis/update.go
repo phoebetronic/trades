@@ -10,7 +10,7 @@ import (
 	"github.com/phoebetron/trades/typ/trade"
 )
 
-func (r *Redis) Update(day time.Time, can []trade.Trade) error {
+func (r *Redis) Update(day time.Time, tra []trade.Trade) error {
 	var key string
 	{
 		key = r.Key()
@@ -18,7 +18,7 @@ func (r *Redis) Update(day time.Time, can []trade.Trade) error {
 
 	var val string
 	{
-		byt, err := json.Marshal(can)
+		byt, err := json.Marshal(tra)
 		if err != nil {
 			return tracer.Mask(err)
 		}
@@ -34,7 +34,7 @@ func (r *Redis) Update(day time.Time, can []trade.Trade) error {
 	{
 		_, err := r.sor.Update().Value(key, val, sco)
 		if sorted.IsNotFound(err) {
-			return tracer.Maskf(notFoundError, "candle for %s does not exist", day.String())
+			return tracer.Maskf(notFoundError, "trade for %s does not exist", day.String())
 		} else if err != nil {
 			return tracer.Mask(err)
 		}

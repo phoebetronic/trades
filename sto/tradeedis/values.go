@@ -25,7 +25,7 @@ func (r *Redis) Values() (map[time.Time][]trade.Trade, error) {
 		}
 	}
 
-	can := map[time.Time][]trade.Trade{}
+	tra := map[time.Time][]trade.Trade{}
 	{
 		for _, r := range res {
 			var c []trade.Trade
@@ -38,11 +38,11 @@ func (r *Redis) Values() (map[time.Time][]trade.Trade, error) {
 
 			{
 				if len(c) != 0 {
-					can[timday(c[0].TS)] = c
+					tra[timday(c[0].TS)] = c
 				}
 			}
 		}
 	}
 
-	return can, nil
+	return tra, nil
 }

@@ -24,7 +24,7 @@ func (r *Redis) Latest() (trade.Trade, error) {
 		}
 
 		if len(res) == 0 {
-			return trade.Trade{}, tracer.Maskf(notFoundError, "latest candle does not exist")
+			return trade.Trade{}, tracer.Maskf(notFoundError, "latest trade does not exist")
 		}
 		if len(res) != 1 {
 			return trade.Trade{}, tracer.Maskf(executionFailedError, "unexpected redis response")
@@ -33,17 +33,17 @@ func (r *Redis) Latest() (trade.Trade, error) {
 		val = res[0]
 	}
 
-	var can []trade.Trade
+	var tra []trade.Trade
 	{
-		err = json.Unmarshal([]byte(val), &can)
+		err = json.Unmarshal([]byte(val), &tra)
 		if err != nil {
 			return trade.Trade{}, tracer.Mask(err)
 		}
 
-		if len(can) == 0 {
-			return trade.Trade{}, tracer.Maskf(notFoundError, "latest candle does not exist")
+		if len(tra) == 0 {
+			return trade.Trade{}, tracer.Maskf(notFoundError, "latest trade does not exist")
 		}
 	}
 
-	return can[len(can)-1], nil
+	return tra[len(tra)-1], nil
 }
