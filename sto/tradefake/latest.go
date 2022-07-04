@@ -1,7 +1,7 @@
 package fake
 
-import "github.com/phoebetron/trades/typ/trade"
+import "github.com/phoebetron/trades/typ/trades"
 
-func (f *Fake) Latest() (trade.Trade, error) {
-	return trade.Trade{}, nil
+func (f *Fake) Latest() (trades.Trade, error) {
+	return trades.Trade{}, nil
 }

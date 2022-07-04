@@ -1,9 +1,8 @@
 package traderedis
 
 import (
-	"github.com/xh3b4sd/redigo"
-
 	"github.com/phoebetron/trades/typ/key"
+	"github.com/xh3b4sd/redigo"
 )
 
 func Default() *Redis {

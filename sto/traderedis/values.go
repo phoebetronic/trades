@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
-
-	"github.com/phoebetron/trades/typ/trade"
 )
 
-func (r *Redis) Values() (map[time.Time][]trade.Trade, error) {
+func (r *Redis) Values() (map[time.Time][]trades.Trade, error) {
 	var err error
 
 	var key string
@@ -25,10 +24,10 @@ func (r *Redis) Values() (map[time.Time][]trade.Trade, error) {
 		}
 	}
 
-	tra := map[time.Time][]trade.Trade{}
+	tra := map[time.Time][]trades.Trade{}
 	{
 		for _, r := range res {
-			var c []trade.Trade
+			var c []trades.Trade
 			{
 				err = json.Unmarshal([]byte(r), &c)
 				if err != nil {

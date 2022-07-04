@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/redigo/pkg/sorted"
 	"github.com/xh3b4sd/tracer"
-
-	"github.com/phoebetron/trades/typ/trade"
 )
 
-func (r *Redis) Create(day time.Time, tra []trade.Trade) error {
+func (r *Redis) Update(day time.Time, tra []trades.Trade) error {
 	var key string
 	{
 		key = r.Key()
@@ -32,9 +31,9 @@ func (r *Redis) Create(day time.Time, tra []trade.Trade) error {
 	}
 
 	{
-		err := r.sor.Create().Element(key, val, sco)
-		if sorted.IsAlreadyExistsError(err) {
-			return tracer.Mask(alreadyExistsError)
+		_, err := r.sor.Update().Value(key, val, sco)
+		if sorted.IsNotFound(err) {
+			return tracer.Maskf(notFoundError, "trade for %s does not exist", day.String())
 		} else if err != nil {
 			return tracer.Mask(err)
 		}
