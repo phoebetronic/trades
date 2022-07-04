@@ -1,4 +1,4 @@
-package fake
+package tradesfake
 
 import (
 	"time"
@@ -6,6 +6,6 @@ import (
 	"github.com/phoebetron/trades/typ/trades"
 )
 
-func (f *Fake) Update(time.Time, []trades.Trade) error {
+func (f *Fake) Create(time.Time, []trades.Trade) error {
 	return nil
 }

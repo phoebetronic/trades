@@ -1,7 +1,5 @@
 package key
 
-import "time"
-
 func Default() *Key {
 	var err error
 
@@ -10,7 +8,6 @@ func Default() *Key {
 		c := Config{
 			Exc: "ftx",
 			Ass: "eth",
-			Res: 60 * time.Second,
 		}
 
 		sto, err = New(c)

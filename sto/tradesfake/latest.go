@@ -1,4 +1,4 @@
-package fake
+package tradesfake
 
 import "github.com/phoebetron/trades/typ/trades"
 
