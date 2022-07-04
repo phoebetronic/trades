@@ -1,4 +1,4 @@
-package traderedis
+package tradesredis
 
 import (
 	"github.com/xh3b4sd/tracer"

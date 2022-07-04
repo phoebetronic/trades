@@ -1,14 +1,13 @@
-package traderedis
+package tradesredis
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
 )
 
-func (r *Redis) Values() (map[time.Time][]trades.Trade, error) {
+func (r *Redis) Lister() ([]string, error) {
 	var err error
 
 	var key string
@@ -24,24 +23,20 @@ func (r *Redis) Values() (map[time.Time][]trades.Trade, error) {
 		}
 	}
 
-	tra := map[time.Time][]trades.Trade{}
+	var lis []string
 	{
 		for _, r := range res {
 			var c []trades.Trade
-			{
-				err = json.Unmarshal([]byte(r), &c)
-				if err != nil {
-					return nil, tracer.Mask(err)
-				}
+			err = json.Unmarshal([]byte(r), &c)
+			if err != nil {
+				return nil, tracer.Mask(err)
 			}
 
-			{
-				if len(c) != 0 {
-					tra[timday(c[0].TS)] = c
-				}
+			if len(c) != 0 {
+				lis = append(lis, timfmt(c[0].TS))
 			}
 		}
 	}
 
-	return tra, nil
+	return lis, nil
 }

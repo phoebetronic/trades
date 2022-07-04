@@ -1,4 +1,4 @@
-package fake
+package tradesfake
 
 func Default() *Fake {
 	var err error
