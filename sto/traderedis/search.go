@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
-
-	"github.com/phoebetron/trades/typ/trade"
 )
 
-func (r *Redis) Search(day time.Time) ([]trade.Trade, error) {
+func (r *Redis) Search(day time.Time) ([]trades.Trade, error) {
 	var err error
 
 	var key string
@@ -36,7 +35,7 @@ func (r *Redis) Search(day time.Time) ([]trade.Trade, error) {
 		val = res[0]
 	}
 
-	var tra []trade.Trade
+	var tra []trades.Trade
 	{
 		err = json.Unmarshal([]byte(val), &tra)
 		if err != nil {

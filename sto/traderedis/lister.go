@@ -3,9 +3,8 @@ package traderedis
 import (
 	"encoding/json"
 
+	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
-
-	"github.com/phoebetron/trades/typ/trade"
 )
 
 func (r *Redis) Lister() ([]string, error) {
@@ -27,7 +26,7 @@ func (r *Redis) Lister() ([]string, error) {
 	var lis []string
 	{
 		for _, r := range res {
-			var c []trade.Trade
+			var c []trades.Trade
 			err = json.Unmarshal([]byte(r), &c)
 			if err != nil {
 				return nil, tracer.Mask(err)
