@@ -35,7 +35,7 @@ func (r *Redis) Search(tim time.Time) (*trades.Trades, error) {
 		val = res[0]
 	}
 
-	var tra *trades.Trades
+	tra := &trades.Trades{}
 	{
 		err = proto.Unmarshal([]byte(val), tra)
 		if err != nil {
