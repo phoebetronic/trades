@@ -1,13 +1,12 @@
 package tradesredis
 
 import (
-	"encoding/json"
-
 	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
+	"google.golang.org/protobuf/proto"
 )
 
-func (r *Redis) Latest() (trades.Trade, error) {
+func (r *Redis) Latest() (*trades.Trade, error) {
 	var err error
 
 	var key string
@@ -19,30 +18,30 @@ func (r *Redis) Latest() (trades.Trade, error) {
 	{
 		res, err := r.sor.Search().Order(key, 0, 1)
 		if err != nil {
-			return trades.Trade{}, tracer.Mask(err)
+			return nil, tracer.Mask(err)
 		}
 
 		if len(res) == 0 {
-			return trades.Trade{}, tracer.Maskf(notFoundError, "latest trade does not exist")
+			return nil, tracer.Maskf(notFoundError, "latest trade does not exist")
 		}
 		if len(res) != 1 {
-			return trades.Trade{}, tracer.Maskf(executionFailedError, "unexpected redis response")
+			return nil, tracer.Maskf(executionFailedError, "unexpected redis response")
 		}
 
 		val = res[0]
 	}
 
-	var tra []trades.Trade
+	tra := &trades.Trades{}
 	{
-		err = json.Unmarshal([]byte(val), &tra)
+		err = proto.Unmarshal([]byte(val), tra)
 		if err != nil {
-			return trades.Trade{}, tracer.Mask(err)
+			return nil, tracer.Mask(err)
 		}
 
-		if len(tra) == 0 {
-			return trades.Trade{}, tracer.Maskf(notFoundError, "latest trade does not exist")
+		if len(tra.TR) == 0 {
+			return nil, tracer.Maskf(notFoundError, "latest trade does not exist")
 		}
 	}
 
-	return tra[len(tra)-1], nil
+	return tra.TR[len(tra.TR)-1], nil
 }

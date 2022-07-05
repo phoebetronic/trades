@@ -6,7 +6,7 @@ import (
 	"github.com/xh3b4sd/tracer"
 )
 
-func (r *Redis) Delete(day time.Time) error {
+func (r *Redis) Delete(tim time.Time) error {
 	var key string
 	{
 		key = r.Key()
@@ -14,7 +14,7 @@ func (r *Redis) Delete(day time.Time) error {
 
 	var sco float64
 	{
-		sco = float64(day.Unix())
+		sco = float64(tim.Unix())
 	}
 
 	{

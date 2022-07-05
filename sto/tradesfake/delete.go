@@ -4,6 +4,6 @@ import (
 	"time"
 )
 
-func (f *Fake) Delete(day time.Time) error {
+func (f *Fake) Delete(time.Time) error {
 	return nil
 }
