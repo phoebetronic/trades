@@ -6,7 +6,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (r *Redis) Latest() (*trades.Trade, error) {
+func (r *Redis) Rigmos() (*trades.Trade, error) {
 	var err error
 
 	var key string
@@ -16,13 +16,13 @@ func (r *Redis) Latest() (*trades.Trade, error) {
 
 	var val string
 	{
-		res, err := r.sor.Search().Order(key, 0, 0)
+		res, err := r.sor.Search().Order(key, -1, -1)
 		if err != nil {
 			return nil, tracer.Mask(err)
 		}
 
 		if len(res) == 0 {
-			return nil, tracer.Maskf(notFoundError, "latest trade does not exist")
+			return nil, tracer.Maskf(notFoundError, "first trade does not exist")
 		}
 		if len(res) != 1 {
 			return nil, tracer.Maskf(executionFailedError, "unexpected redis response")
@@ -39,9 +39,9 @@ func (r *Redis) Latest() (*trades.Trade, error) {
 		}
 
 		if len(tra.TR) == 0 {
-			return nil, tracer.Maskf(notFoundError, "latest trade does not exist")
+			return nil, tracer.Maskf(notFoundError, "first trade does not exist")
 		}
 	}
 
-	return tra.TR[len(tra.TR)-1], nil
+	return tra.TR[0], nil
 }

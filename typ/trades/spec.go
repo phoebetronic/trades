@@ -11,6 +11,7 @@ type Storage interface {
 	Delete(time.Time) error
 	Latest() (*Trade, error)
 	Market() key.Interface
+	Rigmos() (*Trade, error)
 	Search(time.Time) (*Trades, error)
 	Update(time.Time, *Trades) error
 }
