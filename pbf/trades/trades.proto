@@ -19,5 +19,14 @@ message Trade {
 }
 
 message Trades {
-  repeated Trade TR = 1;
+  // EX is the exchange identifier for this set of trades.
+  string EX = 1;
+  // AS is the asset identifier for this set of trades.
+  string AS = 2;
+  // ST is the start time for this set of trades.
+  google.protobuf.Timestamp ST = 3;
+  // EN is the end time for this set of trades.
+  google.protobuf.Timestamp EN = 4;
+  // TR is the list of trades for this set of trades.
+  repeated Trade TR = 5;
 }
