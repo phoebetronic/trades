@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package trades;
+option go_package = ".;trades";
+
+message Trade {
+  // LI expresses whether this particular trade was caused by a liquidation.
+  bool LI = 1;
+  // PR is the price at which this trade was made.
+  float PR = 2;
+  // LO is the size of a long trade, if it was not a short trade.
+  float LO = 3;
+  // SH is the size of a short trade, if it was not a long trade.
+  float SH = 4;
+  // TS is the timestamp at which this particular trade happened.
+  google.protobuf.Timestamp TS = 5;
+}
+
+message Trades {
+  repeated Trade TR = 1;
+}

@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/xh3b4sd/redigo v0.26.0
 	github.com/xh3b4sd/tracer v0.5.1
+	google.golang.org/protobuf v1.26.0
 )
 
 require (

@@ -2,10 +2,11 @@ package tradesredis
 
 import (
 	"github.com/phoebetron/trades/typ/key"
+	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/redigo"
 )
 
-func Default() *Redis {
+func Default() trades.Storage {
 	var err error
 
 	var red *Redis

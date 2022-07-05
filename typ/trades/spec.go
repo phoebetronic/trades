@@ -3,12 +3,9 @@ package trades
 import "time"
 
 type Storage interface {
-	Create(time.Time, []Trade) error
-	Cutoff(lim int) error
+	Create(time.Time, *Trades) error
 	Delete(time.Time) error
-	Latest() (Trade, error)
-	Lister() ([]string, error)
-	Search(time.Time) ([]Trade, error)
-	Update(time.Time, []Trade) error
-	Values() (map[time.Time][]Trade, error)
+	Latest() (*Trade, error)
+	Search(time.Time) (*Trades, error)
+	Update(time.Time, *Trades) error
 }

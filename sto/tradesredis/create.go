@@ -1,15 +1,15 @@
 package tradesredis
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/phoebetron/trades/typ/trades"
 	"github.com/xh3b4sd/redigo/pkg/sorted"
 	"github.com/xh3b4sd/tracer"
+	"google.golang.org/protobuf/proto"
 )
 
-func (r *Redis) Create(day time.Time, tra []trades.Trade) error {
+func (r *Redis) Create(day time.Time, tra *trades.Trades) error {
 	var key string
 	{
 		key = r.Key()
@@ -17,7 +17,7 @@ func (r *Redis) Create(day time.Time, tra []trades.Trade) error {
 
 	var val string
 	{
-		byt, err := json.Marshal(tra)
+		byt, err := proto.Marshal(tra)
 		if err != nil {
 			return tracer.Mask(err)
 		}
