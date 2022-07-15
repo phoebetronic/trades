@@ -3,6 +3,7 @@ module github.com/phoebetron/trades
 go 1.18
 
 require (
+	github.com/google/go-cmp v0.5.8
 	github.com/xh3b4sd/redigo v0.27.0
 	github.com/xh3b4sd/tracer v0.5.1
 	google.golang.org/protobuf v1.28.0
