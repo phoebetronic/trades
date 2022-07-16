@@ -12,6 +12,22 @@ func (f Floats) Avg() float32 {
 	return avg(f.FL)
 }
 
+func (f Floats) Max() float32 {
+	if len(f.FL) == 0 {
+		return 0
+	}
+
+	max := f.FL[0]
+
+	for _, v := range f.FL {
+		if v > max {
+			max = v
+		}
+	}
+
+	return max
+}
+
 func (f Floats) Med() float32 {
 	l := len(f.FL)
 
@@ -26,6 +42,22 @@ func (f Floats) Med() float32 {
 	}
 
 	return c[l/2]
+}
+
+func (f Floats) Min() float32 {
+	if len(f.FL) == 0 {
+		return 0
+	}
+
+	min := f.FL[0]
+
+	for _, v := range f.FL {
+		if v < min {
+			min = v
+		}
+	}
+
+	return min
 }
 
 func (f Floats) Sum() float32 {
