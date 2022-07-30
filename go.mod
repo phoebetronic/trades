@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/google/go-cmp v0.5.8
+	github.com/xh3b4sd/framer v0.1.0
 	github.com/xh3b4sd/redigo v0.27.0
 	github.com/xh3b4sd/tracer v0.5.1
 	google.golang.org/protobuf v1.28.1
