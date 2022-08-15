@@ -98,7 +98,7 @@ func Test_Typ_Trades_Frame_Hour(t *testing.T) {
 
 			var fra framer.Frames
 			{
-				fra = f.Exa().Hour()
+				fra = f.Exa().Dur(time.Hour)
 			}
 
 			var re []*Trades
