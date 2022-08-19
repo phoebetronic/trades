@@ -19,20 +19,14 @@ func (f *Framer) Next() *Trades {
 		return nil
 	}
 
+	var fra framer.Frame
+	{
+		fra = f.fra.Next()
+	}
+
 	var tra *Trades
-	for {
-		var fra framer.Frame
-		{
-			fra = f.fra.Next()
-		}
-
-		{
-			tra = f.next(fra)
-		}
-
-		if len(tra.TR) != 0 {
-			break
-		}
+	{
+		tra = f.next(fra)
 	}
 
 	return tra
