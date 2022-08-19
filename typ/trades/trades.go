@@ -1,6 +1,8 @@
 package trades
 
 import (
+	"sort"
+
 	"github.com/phoebetron/trades/typ/floats"
 	"github.com/xh3b4sd/framer"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -36,11 +38,39 @@ func (t *Trades) SH() floats.Floats {
 	return f
 }
 
-func (t *Trades) Frame(con framer.Config) *Framer {
+func (t *Trades) Frame(c framer.Config) *Framer {
 	return &Framer{
-		fra: framer.New(con),
+		fra: framer.New(c),
 		tra: t,
 	}
+}
+
+func (t *Trades) Merge(l []*Trades) *Trades {
+	if len(l) == 0 {
+		return t
+	}
+
+	{
+		sort.SliceStable(l, func(i, j int) bool { return l[i].ST.AsTime().Unix() < l[j].ST.AsTime().Unix() })
+	}
+
+	var i int
+	{
+		i = len(l) - 1
+	}
+
+	{
+		t.EX = l[0].EX
+		t.AS = l[0].AS
+		t.ST = l[0].ST
+		t.EN = l[i].EN
+	}
+
+	for _, v := range l {
+		t.TR = append(t.TR, v.TR...)
+	}
+
+	return t
 }
 
 func (t *Trades) Scale(f float32) *Trades {
@@ -53,20 +83,20 @@ func (t *Trades) Scale(f float32) *Trades {
 	return t.cop(tr)
 }
 
-func (t *Trades) cop(tr []*Trade) *Trades {
+func (t *Trades) cop(l []*Trade) *Trades {
 	return &Trades{
 		EX: t.EX,
 		AS: t.AS,
-		ST: copTim(t.ST),
-		EN: copTim(t.EN),
-		TR: tr,
+		ST: tim(t.ST),
+		EN: tim(t.EN),
+		TR: l,
 	}
 }
 
-func copTim(tim *timestamppb.Timestamp) *timestamppb.Timestamp {
-	if tim == nil {
+func tim(t *timestamppb.Timestamp) *timestamppb.Timestamp {
+	if t == nil {
 		return nil
 	}
 
-	return timestamppb.New(tim.AsTime())
+	return timestamppb.New(t.AsTime())
 }
