@@ -11,17 +11,17 @@ type Framer struct {
 }
 
 func (f *Framer) Last() bool {
-	return f.fra.Last()
+	return f.fra.Last() || len(f.tra.TR) == 0
 }
 
 func (f *Framer) Next() *Trades {
+	if f.Last() {
+		return nil
+	}
+
 	var fra framer.Frame
 	{
 		fra = f.fra.Next()
-	}
-
-	if fra.Empty() {
-		return nil
 	}
 
 	var tra *Trades
@@ -72,9 +72,9 @@ func (f *Framer) next(fra framer.Frame) *Trades {
 		f.tra.TR = f.tra.TR[:len(f.tra.TR)-ind]
 	}
 
-	// In the rare case that the last remaining trade happened at the exact end
-	// time of the very last frame, we simply empty the internal list of trades.
-	if len(f.tra.TR) == 1 && f.tra.TR[0].TS.AsTime().Equal(fra.End) {
+	// In case there is a last remaining trade, we simply empty the internal
+	// list of trades, because there are no frames left for iteration.
+	if len(f.tra.TR) == 1 {
 		f.tra.TR = nil
 	}
 
