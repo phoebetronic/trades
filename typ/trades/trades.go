@@ -2,6 +2,7 @@ package trades
 
 import (
 	"sort"
+	"time"
 
 	"github.com/phoebetron/trades/typ/floats"
 	"github.com/xh3b4sd/framer"
@@ -38,11 +39,88 @@ func (t *Trades) SH() floats.Floats {
 	return f
 }
 
+func (t *Trades) FI() *Trade {
+	return t.TR[0]
+}
+
+func (t *Trades) LA() *Trade {
+	return t.TR[len(t.TR)-1]
+}
+
 func (t *Trades) Frame(c framer.Config) *Framer {
-	return &Framer{
-		fra: framer.New(c),
-		tra: t,
+	var fir *Trade
+	{
+		fir = t.FI()
 	}
+
+	var sta time.Time
+	{
+		sta = fir.TS.AsTime().Truncate(c.Dur)
+	}
+
+	for i := 0; i < int(sta.Sub(t.ST.AsTime().Truncate(c.Dur))/c.Dur); i++ {
+		var tra *Trade
+		{
+			tra = &Trade{
+				LI: fir.LI,
+				PR: fir.PR,
+				LO: fir.LO,
+				SH: fir.SH,
+				TS: timestamppb.New(t.ST.AsTime().Truncate(c.Dur).Add(time.Duration(i) * c.Dur)),
+			}
+		}
+
+		{
+			t.TR = append(t.TR, nil)
+			copy(t.TR[i+1:], t.TR[i:])
+			t.TR[i] = tra
+		}
+	}
+
+	if !fir.TS.AsTime().Equal(t.FI().TS.AsTime()) {
+		t.TR[0].TS = timestamppb.New(c.Sta)
+	}
+
+	var las *Trade
+	{
+		las = t.LA()
+	}
+
+	var end time.Time
+	{
+		end = las.TS.AsTime().Truncate(c.Dur).Add(c.Dur)
+	}
+
+	l := int(cei(t.EN.AsTime(), c.Dur).Sub(end) / c.Dur)
+	for i := 0; i < l; i++ {
+		var tra *Trade
+		{
+			tra = &Trade{
+				LI: las.LI,
+				PR: las.PR,
+				LO: las.LO,
+				SH: las.SH,
+				TS: timestamppb.New(end.Add(time.Duration(i) * c.Dur)),
+			}
+		}
+
+		{
+			t.TR = append(t.TR, tra)
+		}
+	}
+
+	var f *Framer
+	{
+		f = &Framer{
+			dur: c.Dur,
+			fra: framer.New(c),
+			his: []*Trades{{}},
+			las: t.FI(),
+			tra: t,
+		}
+	}
+
+	return f
 }
 
 func (t *Trades) Merge(l []*Trades) *Trades {
@@ -91,6 +169,16 @@ func (t *Trades) cop(l []*Trade) *Trades {
 		EN: tim(t.EN),
 		TR: l,
 	}
+}
+
+func cei(t time.Time, d time.Duration) time.Time {
+	f := t.Truncate(d)
+
+	if f.Equal(t) {
+		return t
+	}
+
+	return f.Add(d)
 }
 
 func tim(t *timestamppb.Timestamp) *timestamppb.Timestamp {

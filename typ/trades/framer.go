@@ -1,13 +1,23 @@
 package trades
 
 import (
+	"time"
+
 	"github.com/xh3b4sd/framer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Framer struct {
+	dur time.Duration
 	fra *framer.Framer
+	his []*Trades
+	las *Trade
+	pre int
 	tra *Trades
+}
+
+func (f *Framer) Hist() []*Trades {
+	return f.his
 }
 
 func (f *Framer) Last() bool {
@@ -29,7 +39,53 @@ func (f *Framer) Next() *Trades {
 		tra = f.next(fra)
 	}
 
+	if len(tra.TR) == 0 {
+		tra.TR = []*Trade{{
+			LI: f.las.LI,
+			PR: f.las.PR,
+			LO: f.las.LO,
+			SH: f.las.SH,
+			TS: timestamppb.New(f.las.TS.AsTime().Truncate(f.dur).Add(f.dur)),
+		}}
+	}
+
+	{
+		f.las = tra.LA()
+	}
+
+	{
+		f.his = f.hist(tra)
+	}
+
 	return tra
+}
+
+func (f *Framer) Pred() int {
+	return f.pre
+}
+
+func (f *Framer) hist(tra *Trades) []*Trades {
+	if !f.his[len(f.his)-1].ST.AsTime().Add(time.Minute).After(tra.ST.AsTime()) {
+		f.his = append(f.his, tra)
+	}
+
+	if len(f.his) > 5 {
+		{
+			copy(f.his[0:], f.his[1:])
+			f.his[len(f.his)-1] = nil
+			f.his = f.his[:len(f.his)-1]
+		}
+
+		{
+			f.pre = 0
+		}
+
+		for i := 1; i < 5; i++ {
+			f.pre += f.pred(f.his[i-1].PR().Avg(), f.his[i].PR().Avg())
+		}
+	}
+
+	return f.his
 }
 
 func (f *Framer) next(fra framer.Frame) *Trades {
@@ -74,7 +130,7 @@ func (f *Framer) next(fra framer.Frame) *Trades {
 
 	// In case there is a last remaining trade, we simply empty the internal
 	// list of trades, because there are no frames left for iteration.
-	if len(f.tra.TR) == 1 {
+	if len(f.tra.TR) == 1 && f.fra.Last() {
 		f.tra.TR = nil
 	}
 
@@ -87,4 +143,16 @@ func (f *Framer) next(fra framer.Frame) *Trades {
 	}
 
 	return tra
+}
+
+func (f *Framer) pred(a float32, b float32) int {
+	if a > b {
+		return -1
+	}
+
+	if a < b {
+		return +1
+	}
+
+	return 0
 }
