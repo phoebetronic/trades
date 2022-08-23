@@ -29,4 +29,12 @@ message Trades {
   google.protobuf.Timestamp EN = 4;
   // TR is the list of trades for this set of trades.
   repeated Trade TR = 5;
+  // MI is the optional minimum price observed within this particular trades
+  // container. MI is NOT supposed to be serialized in binary format, that is MI
+  // should never be stored, but rather be computed on the fly.
+  float MI = 6;
+  // MA is the optional maximum price observed within this particular trades
+  // container. MA is NOT supposed to be serialized in binary format, that is MA
+  // should never be stored, but rather be computed on the fly.
+  float MA = 7;
 }
