@@ -1,15 +1,14 @@
 package buffer
 
 import (
-	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/phoebetron/trades/fix"
 	"github.com/phoebetron/trades/typ/key"
 	"github.com/phoebetron/trades/typ/trades"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func Test_Typ_Buffer_Finish(t *testing.T) {
@@ -130,7 +129,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 
 			var exp int
 			for _, t := range tc.tim {
-				l := len(newTrades(t))
+				l := len(newTra(t))
 				if l != 0 {
 					exp += l
 				} else {
@@ -318,7 +317,7 @@ func Test_Buffer_Empty_Thr(t *testing.T) {
 func buffer(buf Interface, str string, ind ...int) {
 	var tra []*trades.Trade
 	{
-		tra = newTrades(newTim(str))
+		tra = newTra(newTim(str))
 	}
 
 	{
@@ -368,31 +367,15 @@ func newTim(str string) time.Time {
 	return tim
 }
 
-type jsnTra struct {
-	LI bool
-	PR float32
-	LO float32
-	SH float32
-	TS time.Time
-}
-
-func newTrades(tim time.Time) []*trades.Trade {
-	var dic map[time.Time][]jsnTra
-	{
-		err := json.Unmarshal([]byte(tesTra), &dic)
-		if err != nil {
-			panic(err)
-		}
-	}
-
+func newTra(tim time.Time) []*trades.Trade {
 	var tra []*trades.Trade
-	for _, v := range dic[tim] {
+	for _, v := range fix.Map()[tim] {
 		tra = append(tra, &trades.Trade{
 			LI: v.LI,
 			PR: v.PR,
 			LO: v.LO,
 			SH: v.SH,
-			TS: timestamppb.New(v.TS),
+			TS: v.TS,
 		})
 	}
 
