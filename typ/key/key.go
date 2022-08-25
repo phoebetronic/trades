@@ -5,6 +5,7 @@ type Config struct {
 	Ass string
 }
 
+// TODO rename to market ?
 type Key struct {
 	exc string
 	ass string
