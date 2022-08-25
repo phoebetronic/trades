@@ -2,6 +2,7 @@ package buffer
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 	"time"
 
@@ -109,8 +110,15 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 			}
 
 			var cou int
+			var wei sync.WaitGroup
 			var tra []*trades.Trades
+
+			wei.Add(1)
 			go func() {
+				{
+					defer wei.Done()
+				}
+
 				for c := range buf.Trades() {
 					{
 						cou += len(c.TR)
@@ -125,6 +133,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 			{
 				tc.set(buf)
 				close(buf.Trades())
+				wei.Wait()
 			}
 
 			var exp int
