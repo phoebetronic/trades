@@ -9,6 +9,6 @@ import (
 type Interface interface {
 	Buffer(*trades.Trade)
 	Finish(time.Time)
-	Metric() (int, int, int)
+	Metric() int
 	Trades() chan *trades.Trades
 }
