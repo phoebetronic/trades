@@ -8,19 +8,19 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/phoebetron/trades/fix"
-	"github.com/phoebetron/trades/typ/key"
+	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
 )
 
 func Test_Typ_Buffer_Finish(t *testing.T) {
 	testCases := []struct {
-		len time.Duration
+		dur time.Duration
 		set func(c Interface)
 		tim []time.Time
 	}{
 		// case 0
 		{
-			len: 3 * time.Second,
+			dur: 3 * time.Second,
 			set: func(c Interface) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.600Z")
@@ -36,7 +36,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		},
 		// case 1
 		{
-			len: 3 * time.Second,
+			dur: 3 * time.Second,
 			set: func(c Interface) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.500Z")
@@ -54,7 +54,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		},
 		// case 2
 		{
-			len: 3 * time.Second,
+			dur: 3 * time.Second,
 			set: func(c Interface) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.500Z")
@@ -74,7 +74,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		},
 		// case 3
 		{
-			len: 3 * time.Second,
+			dur: 3 * time.Second,
 			set: func(c Interface) {
 				finish(c, "2022-05-02T00:00:16.500Z")
 				finish(c, "2022-05-02T00:00:16.600Z")
@@ -104,8 +104,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 			var buf Interface
 			{
 				buf = New(Config{
-					Len: tc.len,
-					Mar: key.Default(),
+					Mar: newMar(tc.dur),
 				})
 			}
 
@@ -182,7 +181,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 					if !tra[i].ST.AsTime().Equal(tc.tim[i]) {
 						t.Fatalf("ST\n\n%s\n", cmp.Diff(tc.tim[i].String(), tra[i].ST.AsTime().String()))
 					}
-					if !tra[i].EN.AsTime().Equal(tc.tim[i].Add(tc.len)) {
+					if !tra[i].EN.AsTime().Equal(tc.tim[i].Add(tc.dur)) {
 						t.Fatalf("EN\n\n%s\n", cmp.Diff(tc.tim[i].String(), tra[i].EN.AsTime().String()))
 					}
 					if len(tra[i].TR) == 0 {
@@ -242,8 +241,7 @@ func Test_Buffer_Empty_One(t *testing.T) {
 	var buf Interface
 	{
 		buf = New(Config{
-			Len: 3 * time.Second,
-			Mar: key.Default(),
+			Mar: newMar(3 * time.Second),
 		})
 	}
 
@@ -277,8 +275,7 @@ func Test_Buffer_Empty_Two(t *testing.T) {
 	var buf Interface
 	{
 		buf = New(Config{
-			Len: 3 * time.Second,
-			Mar: key.Default(),
+			Mar: newMar(3 * time.Second),
 		})
 	}
 
@@ -300,8 +297,7 @@ func Test_Buffer_Empty_Thr(t *testing.T) {
 	var buf Interface
 	{
 		buf = New(Config{
-			Len: 3 * time.Second,
-			Mar: key.Default(),
+			Mar: newMar(3 * time.Second),
 		})
 	}
 
@@ -360,6 +356,14 @@ func finish(buf Interface, str string) {
 	{
 		buf.Finish(tim.UTC())
 	}
+}
+
+func newMar(dur time.Duration) *market.Market {
+	return market.New(market.Config{
+		Exc: "ftx",
+		Ass: "eth",
+		Dur: dur,
+	})
 }
 
 func newTim(str string) time.Time {

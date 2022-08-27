@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/phoebetron/trades/typ/key"
+	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -13,8 +13,7 @@ type Buffer struct {
 	buf map[time.Time][]*trades.Trade
 	cha chan *trades.Trades
 	ini bool
-	len time.Duration
-	mar *key.Key
+	mar *market.Market
 	max map[time.Time]float32
 	min map[time.Time]float32
 	mut sync.Mutex
@@ -24,13 +23,12 @@ type Buffer struct {
 
 func New(con Config) *Buffer {
 	{
-		con.verify()
+		con.Verify()
 	}
 
 	return &Buffer{
 		buf: map[time.Time][]*trades.Trade{},
 		cha: make(chan *trades.Trades, 1),
-		len: con.Len,
 		mar: con.Mar,
 		max: map[time.Time]float32{},
 		min: map[time.Time]float32{},
@@ -45,7 +43,7 @@ func (b *Buffer) Buffer(tra *trades.Trade) {
 
 	var tim time.Time
 	{
-		tim = tra.TS.AsTime().Truncate(b.len)
+		tim = tra.TS.AsTime().Truncate(b.mar.Dur())
 	}
 
 	if len(b.buf[tim]) == 0 {
@@ -70,7 +68,7 @@ func (b *Buffer) Finish(tim time.Time) {
 
 	var buc time.Time
 	{
-		buc = tim.Truncate(b.len)
+		buc = tim.Truncate(b.mar.Dur())
 	}
 
 	{
@@ -125,7 +123,7 @@ func (b *Buffer) Finish(tim time.Time) {
 				EX: b.mar.Exc(),
 				AS: b.mar.Ass(),
 				ST: timestamppb.New(b.tim),
-				EN: timestamppb.New(b.tim.Add(b.len)),
+				EN: timestamppb.New(b.tim.Add(b.mar.Dur())),
 				TR: tra,
 				MI: min,
 				MA: max,
