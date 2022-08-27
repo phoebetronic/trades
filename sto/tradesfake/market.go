@@ -1,7 +1,9 @@
 package tradesfake
 
-import "github.com/phoebetron/trades/typ/key"
+import (
+	"github.com/phoebetron/trades/typ/market"
+)
 
-func (f *Fake) Market() key.Interface {
-	return &key.Key{}
+func (f *Fake) Market() market.Interface {
+	return &market.Market{}
 }

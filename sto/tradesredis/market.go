@@ -1,7 +1,7 @@
 package tradesredis
 
-import "github.com/phoebetron/trades/typ/key"
+import "github.com/phoebetron/trades/typ/market"
 
-func (r *Redis) Market() key.Interface {
-	return r.key
+func (r *Redis) Market() market.Interface {
+	return r.mar
 }
