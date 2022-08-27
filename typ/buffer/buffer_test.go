@@ -154,20 +154,12 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 			}
 
 			var bu int
-			var ma int
-			var mi int
 			{
-				bu, ma, mi = buf.Metric()
+				bu = buf.Metric()
 			}
 
 			if bu > 2 {
 				t.Fatalf("buf\n\n%s\n", cmp.Diff(2, bu))
-			}
-			if ma > 2 {
-				t.Fatalf("max\n\n%s\n", cmp.Diff(2, ma))
-			}
-			if mi > 2 {
-				t.Fatalf("min\n\n%s\n", cmp.Diff(2, mi))
 			}
 
 			for i := range tra {
@@ -186,12 +178,6 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 					}
 					if len(tra[i].TR) == 0 {
 						t.Fatal("trades must not be empty")
-					}
-					if tra[i].MI != tra[i].PR().Min() {
-						t.Fatalf("MI\n\n%s\n", cmp.Diff(tra[i].PR().Min(), tra[i].MI))
-					}
-					if tra[i].MA != tra[i].PR().Max() {
-						t.Fatalf("MA\n\n%s\n", cmp.Diff(tra[i].PR().Max(), tra[i].MA))
 					}
 				}
 
@@ -254,18 +240,18 @@ func Test_Buffer_Empty_One(t *testing.T) {
 	{
 		select {
 		case tra := <-buf.Trades():
-			if len(tra.TR) != 0 {
-				t.Fatal("expected empty candle result")
+			if len(tra.TR) != 1 {
+				t.Fatal("expected one empty trade")
 			}
 		default:
-			t.Fatal("expected empty candle result")
+			t.Fatal("expected empty trades result")
 		}
 	}
 
 	{
 		select {
 		case <-buf.Trades():
-			t.Fatal("expected no more candle results")
+			t.Fatal("expected no more trades results")
 		default:
 		}
 	}
@@ -287,7 +273,7 @@ func Test_Buffer_Empty_Two(t *testing.T) {
 	{
 		select {
 		case <-buf.Trades():
-			t.Fatal("expected no candle results at all")
+			t.Fatal("expected no trades results at all")
 		default:
 		}
 	}
@@ -313,7 +299,7 @@ func Test_Buffer_Empty_Thr(t *testing.T) {
 	{
 		select {
 		case <-buf.Trades():
-			t.Fatal("expected no candle results at all")
+			t.Fatal("expected no trades results at all")
 		default:
 		}
 	}
