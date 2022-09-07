@@ -6,9 +6,10 @@ import (
 	"github.com/phoebetron/trades/typ/trades"
 )
 
-type Interface interface {
+type Buffer interface {
 	Buffer(*trades.Trade)
 	Finish(time.Time)
+	Latest(*trades.Trade)
 	Metric() int
 	Trades() chan *trades.Trades
 }

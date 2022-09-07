@@ -2,7 +2,7 @@ package market
 
 import "time"
 
-type Interface interface {
+type Market interface {
 	Exc() string
 	Ass() string
 	Dur() time.Duration

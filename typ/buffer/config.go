@@ -5,7 +5,7 @@ import (
 )
 
 type Config struct {
-	Mar *market.Market
+	Mar market.Market
 }
 
 func (c Config) Verify() {

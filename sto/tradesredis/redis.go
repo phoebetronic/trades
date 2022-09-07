@@ -6,7 +6,7 @@ import (
 )
 
 type Redis struct {
-	mar market.Interface
+	mar market.Market
 	sor sorted.Interface
 }
 
