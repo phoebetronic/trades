@@ -9,22 +9,22 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-type Buffer struct {
+type B struct {
 	buf map[time.Time][]*trades.Trade
 	cha chan *trades.Trades
 	ini bool
-	mar *market.Market
+	mar market.Market
 	mut sync.Mutex
 	tim time.Time
 	tra *trades.Trade
 }
 
-func New(con Config) *Buffer {
+func New(con Config) *B {
 	{
 		con.Verify()
 	}
 
-	return &Buffer{
+	return &B{
 		buf: map[time.Time][]*trades.Trade{},
 		cha: make(chan *trades.Trades, 1),
 		mar: con.Mar,
@@ -32,7 +32,7 @@ func New(con Config) *Buffer {
 	}
 }
 
-func (b *Buffer) Buffer(tra *trades.Trade) {
+func (b *B) Buffer(tra *trades.Trade) {
 	var tim time.Time
 	{
 		tim = tra.TS.AsTime().Truncate(b.mar.Dur())
@@ -45,7 +45,7 @@ func (b *Buffer) Buffer(tra *trades.Trade) {
 	}
 }
 
-func (b *Buffer) Finish(tim time.Time) {
+func (b *B) Finish(tim time.Time) {
 	{
 		b.mut.Lock()
 		defer b.mut.Unlock()
@@ -120,10 +120,14 @@ func (b *Buffer) Finish(tim time.Time) {
 	}
 }
 
-func (b *Buffer) Metric() int {
+func (b *B) Latest(tra *trades.Trade) {
+	b.tra = tra
+}
+
+func (b *B) Metric() int {
 	return len(b.buf)
 }
 
-func (b *Buffer) Trades() chan *trades.Trades {
+func (b *B) Trades() chan *trades.Trades {
 	return b.cha
 }

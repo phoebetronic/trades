@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	Mar market.Interface
+	Mar market.Market
 	Sor sorted.Interface
 }
 

@@ -15,13 +15,13 @@ import (
 func Test_Typ_Buffer_Finish(t *testing.T) {
 	testCases := []struct {
 		dur time.Duration
-		set func(c Interface)
+		set func(c Buffer)
 		tim []time.Time
 	}{
 		// case 0
 		{
 			dur: 3 * time.Second,
-			set: func(c Interface) {
+			set: func(c Buffer) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.600Z")
 				finish(c, "2022-05-02T00:00:01.000Z")
@@ -37,7 +37,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		// case 1
 		{
 			dur: 3 * time.Second,
-			set: func(c Interface) {
+			set: func(c Buffer) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.500Z")
 				finish(c, "2022-05-02T00:00:00.600Z")
@@ -55,7 +55,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		// case 2
 		{
 			dur: 3 * time.Second,
-			set: func(c Interface) {
+			set: func(c Buffer) {
 				finish(c, "2022-05-01T23:59:59.500Z")
 				finish(c, "2022-05-02T00:00:00.500Z")
 				finish(c, "2022-05-02T00:00:00.600Z")
@@ -75,7 +75,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 		// case 3
 		{
 			dur: 3 * time.Second,
-			set: func(c Interface) {
+			set: func(c Buffer) {
 				finish(c, "2022-05-02T00:00:16.500Z")
 				finish(c, "2022-05-02T00:00:16.600Z")
 				finish(c, "2022-05-02T00:00:17.000Z")
@@ -101,7 +101,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 
 	for i, tc := range testCases {
 		t.Run(fmt.Sprintf("%03d", i), func(t *testing.T) {
-			var buf Interface
+			var buf Buffer
 			{
 				buf = New(Config{
 					Mar: newMar(tc.dur),
@@ -224,7 +224,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 }
 
 func Test_Buffer_Empty_One(t *testing.T) {
-	var buf Interface
+	var buf Buffer
 	{
 		buf = New(Config{
 			Mar: newMar(3 * time.Second),
@@ -258,7 +258,7 @@ func Test_Buffer_Empty_One(t *testing.T) {
 }
 
 func Test_Buffer_Empty_Two(t *testing.T) {
-	var buf Interface
+	var buf Buffer
 	{
 		buf = New(Config{
 			Mar: newMar(3 * time.Second),
@@ -280,7 +280,7 @@ func Test_Buffer_Empty_Two(t *testing.T) {
 }
 
 func Test_Buffer_Empty_Thr(t *testing.T) {
-	var buf Interface
+	var buf Buffer
 	{
 		buf = New(Config{
 			Mar: newMar(3 * time.Second),
@@ -305,7 +305,7 @@ func Test_Buffer_Empty_Thr(t *testing.T) {
 	}
 }
 
-func buffer(buf Interface, str string, ind ...int) {
+func buffer(buf Buffer, str string, ind ...int) {
 	var tra []*trades.Trade
 	{
 		tra = newTra(newTim(str))
@@ -328,7 +328,7 @@ func buffer(buf Interface, str string, ind ...int) {
 	}
 }
 
-func finish(buf Interface, str string) {
+func finish(buf Buffer, str string) {
 	var err error
 
 	var tim time.Time
@@ -344,7 +344,7 @@ func finish(buf Interface, str string) {
 	}
 }
 
-func newMar(dur time.Duration) *market.Market {
+func newMar(dur time.Duration) market.Market {
 	return market.New(market.Config{
 		Exc: "ftx",
 		Ass: "eth",
