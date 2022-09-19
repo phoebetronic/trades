@@ -12,7 +12,7 @@ import (
 	"github.com/phoebetron/trades/typ/trades"
 )
 
-func Test_Typ_Buffer_Finish(t *testing.T) {
+func Test_Typ_Trades_Buffer_Finish(t *testing.T) {
 	testCases := []struct {
 		dur time.Duration
 		set func(c Buffer)
@@ -182,7 +182,7 @@ func Test_Typ_Buffer_Finish(t *testing.T) {
 				}
 
 				// Case 3 represents a special use case where the trades of our
-				// fictures do not define any trades for the buffer between
+				// fixtures do not define any trades for the buffer between
 				// seconds 24 and 27. The buffer implementation is designed to
 				// fill missing trades by carrying over the last known trade in
 				// order to always provide the last known price and volume
@@ -368,7 +368,7 @@ func newTim(str string) time.Time {
 
 func newTra(tim time.Time) []*trades.Trade {
 	var tra []*trades.Trade
-	for _, v := range fix.Map()[tim] {
+	for _, v := range fix.Tramap()[tim] {
 		tra = append(tra, &trades.Trade{
 			LI: v.LI,
 			PR: v.PR,

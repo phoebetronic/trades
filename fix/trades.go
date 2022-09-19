@@ -2,7 +2,7 @@ package fix
 
 // Trades is a sample of backup trades sorted by unix nano seconds. All trades
 // are grouped together by their buffer length of 3 seconds each. The 3 seconds
-// buffer length is used for unit tests in the typ/buffer package.
+// buffer length is used for unit tests in the typ/trades/buffer package.
 const Trades = `
 {
   "2022-05-02T00:00:00Z": [
