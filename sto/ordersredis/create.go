@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (r *Redis) Create(day time.Time, ord *orders.Orders) error {
+func (r *Redis) Create(tim time.Time, ord *orders.Orders) error {
 	var key string
 	{
 		key = r.Key()
@@ -27,7 +27,7 @@ func (r *Redis) Create(day time.Time, ord *orders.Orders) error {
 
 	var sco float64
 	{
-		sco = float64(day.Unix())
+		sco = float64(tim.Unix())
 	}
 
 	{
