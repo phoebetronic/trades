@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package orders;
+option go_package = ".;orders";
+
+message Order {
+  // PR is the price at which this order was placed in the orderbook.
+  float PR = 1;
+  // SI is the size at which this order was placed in the orderbook.
+  float SI = 2;
+}
+
+message Bundle {
+  // AS is the list of asks for this bundle of orders.
+  repeated Order AK = 1;
+  // BD is the list of bids for this bundle of orders.
+  repeated Order BD = 2;
+  // TS is the timestamp at which this particular bundle was recorded.
+  google.protobuf.Timestamp TS = 3;
+}
+
+message Orders {
+  // EX is the exchange identifier for this set of trades.
+  string EX = 1;
+  // AS is the asset identifier for this set of trades.
+  string AS = 2;
+  // ST is the start time for this set of trades.
+  google.protobuf.Timestamp ST = 3;
+  // EN is the end time for this set of trades.
+  google.protobuf.Timestamp EN = 4;
+  // BU is the bundle of asks and bids for this set of orders.
+  repeated Bundle BU = 5;
+}

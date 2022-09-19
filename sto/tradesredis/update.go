@@ -33,7 +33,7 @@ func (r *Redis) Update(tim time.Time, tra *trades.Trades) error {
 	{
 		_, err := r.sor.Update().Value(key, val, sco)
 		if sorted.IsNotFound(err) {
-			return tracer.Maskf(notFoundError, "trade for %s does not exist", tim.String())
+			return tracer.Maskf(notFoundError, "trades for %s do not exist", tim.String())
 		} else if err != nil {
 			return tracer.Mask(err)
 		}
