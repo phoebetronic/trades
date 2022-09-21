@@ -19,6 +19,8 @@ message Bundle {
   repeated Order BD = 2;
   // TS is the timestamp at which this particular bundle was recorded.
   google.protobuf.Timestamp TS = 3;
+  // MI is the mid point between the lowest ask and the highest bid.
+  float MI = 4;
 }
 
 message Orders {
