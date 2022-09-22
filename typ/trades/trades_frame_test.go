@@ -252,10 +252,6 @@ func Test_Typ_Trades_Frame_Next(t *testing.T) {
 				re = append(re, f.Next())
 			}
 
-			if len(tc.tr.TR) != 0 {
-				t.Fatalf("len\n\n%s\n", cmp.Diff(len(tc.tr.TR), 0))
-			}
-
 			if len(re) != len(tc.re) {
 				t.Fatalf("len\n\n%s\n", cmp.Diff(len(tc.re), len(re)))
 			}
