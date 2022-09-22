@@ -11,6 +11,7 @@ type Framer struct {
 	dur time.Duration
 	fra *framer.Framer
 	his []*Trades
+	ind int
 	las *Trade
 	pre int
 	tra *Trades
@@ -99,39 +100,17 @@ func (f *Framer) next(fra framer.Frame) *Trades {
 		}
 	}
 
-	var ind int
-	for i := 0; i < len(f.tra.TR); i++ {
-		{
-			ind = i
-		}
-
-		if !f.tra.TR[i].TS.AsTime().Before(fra.End) {
+	for ; f.ind < len(f.tra.TR); f.ind++ {
+		if !f.tra.TR[f.ind].TS.AsTime().Before(fra.End) {
 			break
 		}
-		if f.tra.TR[i].TS.AsTime().Before(fra.Sta) {
+		if f.tra.TR[f.ind].TS.AsTime().Before(fra.Sta) {
 			continue
 		}
 
 		{
-			tra.TR = append(tra.TR, f.tra.TR[i])
+			tra.TR = append(tra.TR, f.tra.TR[f.ind])
 		}
-	}
-
-	// Once the next frame of trades got constructed, we remove the allocated
-	// trades from the source structure. This is to move trades around instead
-	// of duplicating them.
-	{
-		copy(f.tra.TR[0:], f.tra.TR[ind:])
-		for k, n := len(f.tra.TR)-ind, len(f.tra.TR); k < n; k++ {
-			f.tra.TR[k] = nil
-		}
-		f.tra.TR = f.tra.TR[:len(f.tra.TR)-ind]
-	}
-
-	// In case there is a last remaining trade, we simply empty the internal
-	// list of trades, because there are no frames left for iteration.
-	if len(f.tra.TR) == 1 && f.fra.Last() {
-		f.tra.TR = nil
 	}
 
 	// Since the frame creation moves the trades window forward, we push the
