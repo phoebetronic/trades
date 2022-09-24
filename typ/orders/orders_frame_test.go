@@ -137,7 +137,7 @@ func Test_Typ_Orders_Frame_Next(t *testing.T) {
 				f = tc.or.Frame(framer.Config{
 					Sta: tc.or.ST.AsTime(),
 					End: tc.or.EN.AsTime(),
-					Dur: time.Minute,
+					Len: time.Minute,
 				})
 			}
 

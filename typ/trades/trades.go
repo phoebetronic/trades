@@ -55,10 +55,10 @@ func (t *Trades) Frame(c framer.Config) *Framer {
 
 	var sta time.Time
 	{
-		sta = fir.TS.AsTime().Truncate(c.Dur)
+		sta = fir.TS.AsTime().Truncate(c.Len)
 	}
 
-	for i := 0; i < int(sta.Sub(t.ST.AsTime().Truncate(c.Dur))/c.Dur); i++ {
+	for i := 0; i < int(sta.Sub(t.ST.AsTime().Truncate(c.Len))/c.Len); i++ {
 		var tra *Trade
 		{
 			tra = &Trade{
@@ -66,7 +66,7 @@ func (t *Trades) Frame(c framer.Config) *Framer {
 				PR: fir.PR,
 				LO: fir.LO,
 				SH: fir.SH,
-				TS: timestamppb.New(t.ST.AsTime().Truncate(c.Dur).Add(time.Duration(i) * c.Dur)),
+				TS: timestamppb.New(t.ST.AsTime().Truncate(c.Len).Add(time.Duration(i) * c.Len)),
 			}
 		}
 
@@ -81,40 +81,11 @@ func (t *Trades) Frame(c framer.Config) *Framer {
 		t.TR[0].TS = timestamppb.New(c.Sta)
 	}
 
-	var las *Trade
-	{
-		las = t.LA()
-	}
-
-	var end time.Time
-	{
-		end = las.TS.AsTime().Truncate(c.Dur).Add(c.Dur)
-	}
-
-	l := int(cei(t.EN.AsTime(), c.Dur).Sub(end) / c.Dur)
-	for i := 0; i < l; i++ {
-		var tra *Trade
-		{
-			tra = &Trade{
-				LI: las.LI,
-				PR: las.PR,
-				LO: las.LO,
-				SH: las.SH,
-				TS: timestamppb.New(end.Add(time.Duration(i) * c.Dur)),
-			}
-		}
-
-		{
-			t.TR = append(t.TR, tra)
-		}
-	}
-
 	var f *Framer
 	{
 		f = &Framer{
-			dur: c.Dur,
+			con: c,
 			fra: framer.New(c),
-			his: []*Trades{{}},
 			las: t.FI(),
 			tra: t,
 		}
