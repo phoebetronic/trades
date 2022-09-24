@@ -1,14 +1,11 @@
 package orders
 
 import (
-	"time"
-
 	"github.com/xh3b4sd/framer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type Framer struct {
-	dur time.Duration
 	fra *framer.Framer
 	ord *Orders
 }
