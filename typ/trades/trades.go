@@ -142,16 +142,6 @@ func (t *Trades) cop(l []*Trade) *Trades {
 	}
 }
 
-func cei(t time.Time, d time.Duration) time.Time {
-	f := t.Truncate(d)
-
-	if f.Equal(t) {
-		return t
-	}
-
-	return f.Add(d)
-}
-
 func tim(t *timestamppb.Timestamp) *timestamppb.Timestamp {
 	if t == nil {
 		return nil

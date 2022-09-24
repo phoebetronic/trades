@@ -13,7 +13,6 @@ type Framer struct {
 	fra *framer.Framer
 	ind int
 	las *Trade
-	pre int
 	tra *Trades
 }
 
