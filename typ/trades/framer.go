@@ -16,44 +16,27 @@ type Framer struct {
 	tra *Trades
 }
 
-func (f *Framer) Hist(len time.Duration, tic time.Duration) []*Trades {
-	var c framer.Config
+func (f *Framer) Conf() framer.Config {
+	return f.con
+}
+
+func (f *Framer) Rang(off time.Duration, win time.Duration, rig time.Duration, tic time.Duration) *Ranger {
+	var o time.Time
+	var w time.Time
+	var s time.Time
+	var r time.Time
 	{
-		c = framer.Config{
-			Sta: f.cur.Sta.Add(-len),
-			End: f.cur.Sta,
-			Len: tic,
-		}
+		o = f.cur.Sta.Add(-off).Add(-win)
+		w = f.cur.Sta.Add(-win)
+		s = f.cur.Sta
+		r = f.cur.Sta.Add(+rig)
 	}
 
-	var fir *Trade
-	for i := f.ind; i >= 0; i-- {
-		if !f.tra.TR[i].TS.AsTime().After(c.Sta) {
-			fir = f.tra.TR[i]
-			break
-		}
+	return &Ranger{
+		off: f.lis(framer.Config{Sta: o, End: w, Len: tic}),
+		win: f.lis(framer.Config{Sta: w, End: s, Len: tic}),
+		rig: f.lis(framer.Config{Sta: s, End: r, Len: tic}),
 	}
-
-	if fir == nil {
-		fir = f.tra.TR[0]
-	}
-
-	var n *Framer
-	{
-		n = &Framer{
-			con: c,
-			fra: framer.New(c),
-			las: fir,
-			tra: f.tra,
-		}
-	}
-
-	var t []*Trades
-	for !n.Last() {
-		t = append(t, n.Next())
-	}
-
-	return t
 }
 
 func (f *Framer) Last() bool {
@@ -116,6 +99,37 @@ func (f *Framer) next(fra framer.Frame) *Trades {
 		{
 			tra.TR = append(tra.TR, f.tra.TR[i])
 		}
+	}
+
+	return tra
+}
+
+func (f *Framer) lis(con framer.Config) []*Trades {
+	var fir *Trade
+	for i := f.ind; i >= 0; i-- {
+		if !f.tra.TR[i].TS.AsTime().After(con.Sta) {
+			fir = f.tra.TR[i]
+			break
+		}
+	}
+
+	if fir == nil {
+		fir = f.tra.TR[0]
+	}
+
+	var fra *Framer
+	{
+		fra = &Framer{
+			con: con,
+			fra: framer.New(con),
+			las: fir,
+			tra: f.tra,
+		}
+	}
+
+	var tra []*Trades
+	for !fra.Last() {
+		tra = append(tra, fra.Next())
 	}
 
 	return tra
