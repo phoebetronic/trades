@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/phoebetron/trades/typ/market"
-	"github.com/phoebetron/trades/typ/orders"
+	"github.com/phoebetronic/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/orders"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

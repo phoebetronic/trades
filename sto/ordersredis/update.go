@@ -3,7 +3,7 @@ package ordersredis
 import (
 	"time"
 
-	"github.com/phoebetron/trades/typ/orders"
+	"github.com/phoebetronic/trades/typ/orders"
 	"github.com/xh3b4sd/redigo/pkg/sorted"
 	"github.com/xh3b4sd/tracer"
 	"google.golang.org/protobuf/proto"

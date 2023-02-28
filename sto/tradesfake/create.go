@@ -3,7 +3,7 @@ package tradesfake
 import (
 	"time"
 
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 func (f *Fake) Create(time.Time, *trades.Trades) error {
