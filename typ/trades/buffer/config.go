@@ -1,7 +1,7 @@
 package buffer
 
 import (
-	"github.com/phoebetron/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/market"
 )
 
 type Config struct {

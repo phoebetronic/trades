@@ -3,7 +3,7 @@ package buffer
 import (
 	"time"
 
-	"github.com/phoebetron/trades/typ/orders"
+	"github.com/phoebetronic/trades/typ/orders"
 )
 
 type Buffer interface {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/phoebetron/trades/typ/orders"
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/orders"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 func Ordmap() map[time.Time]*orders.Bundle {

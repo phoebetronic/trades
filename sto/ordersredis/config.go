@@ -1,7 +1,7 @@
 package ordersredis
 
 import (
-	"github.com/phoebetron/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/market"
 	"github.com/xh3b4sd/redigo/pkg/sorted"
 )
 

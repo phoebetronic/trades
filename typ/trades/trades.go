@@ -4,7 +4,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/phoebetron/trades/typ/floats"
+	"github.com/phoebetronic/trades/typ/floats"
 	"github.com/xh3b4sd/framer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )

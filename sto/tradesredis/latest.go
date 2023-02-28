@@ -1,7 +1,7 @@
 package tradesredis
 
 import (
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/trades"
 	"github.com/xh3b4sd/tracer"
 	"google.golang.org/protobuf/proto"
 )

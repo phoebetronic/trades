@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/phoebetron/trades/fix"
-	"github.com/phoebetron/trades/typ/market"
-	"github.com/phoebetron/trades/typ/orders"
+	"github.com/phoebetronic/trades/fix"
+	"github.com/phoebetronic/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/orders"
 )
 
 func Test_Typ_Orders_Buffer_Finish(t *testing.T) {

@@ -1,6 +1,6 @@
 package tradesredis
 
-import "github.com/phoebetron/trades/typ/market"
+import "github.com/phoebetronic/trades/typ/market"
 
 func (r *Redis) Market() market.Market {
 	return r.mar

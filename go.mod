@@ -1,4 +1,4 @@
-module github.com/phoebetron/trades
+module github.com/phoebetronic/trades
 
 go 1.20
 

@@ -3,7 +3,7 @@ package orders
 import (
 	"time"
 
-	"github.com/phoebetron/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/market"
 )
 
 type Storage interface {
