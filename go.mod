@@ -6,7 +6,7 @@ require (
 	github.com/google/go-cmp v0.5.9
 	github.com/xh3b4sd/framer v0.4.1
 	github.com/xh3b4sd/redigo v0.30.1
-	github.com/xh3b4sd/tracer v0.9.0
+	github.com/xh3b4sd/tracer v0.10.1
 	google.golang.org/protobuf v1.31.0
 )
 
