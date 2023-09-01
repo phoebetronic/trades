@@ -21,8 +21,8 @@ github.com/stretchr/testify v1.8.1 h1:w7B6lhMri9wdJUVmEZPGGhZzrYTPvgJArz7wNPgYKs
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/xh3b4sd/framer v0.4.1 h1:GJOD8wfBOOb+kWWPN/XLsYHkmfqaRb1UriBKkA0Uq8Y=
 github.com/xh3b4sd/framer v0.4.1/go.mod h1:GQIfCHoxexuTICSOue0iON1kQ+TDScTmMUo9elu6aBY=
-github.com/xh3b4sd/redigo v0.31.0 h1:sP/dD09MvrK96DHq5t5BPEXpRrwQtMWGIJB91Bga0DQ=
-github.com/xh3b4sd/redigo v0.31.0/go.mod h1:J1XOMXWZ347nZzmjsnjoXD7J+Hl4Tt5X9hIzIxpG9RE=
+github.com/xh3b4sd/redigo v0.32.0 h1:urESeNTRBFq/+ujT7npi9yAwqd8s1j6UrYrIdP2tF/g=
+github.com/xh3b4sd/redigo v0.32.0/go.mod h1:J1XOMXWZ347nZzmjsnjoXD7J+Hl4Tt5X9hIzIxpG9RE=
 github.com/xh3b4sd/tracer v0.10.1 h1:wuzVeQtqYsy51Nkb7P/XavZ8rQYptxxmlM1ivFJ8dXE=
 github.com/xh3b4sd/tracer v0.10.1/go.mod h1:8nRbNXXhSSDmPfyoRRYgwQt/RpzAUH+zNsagP9InH8M=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
